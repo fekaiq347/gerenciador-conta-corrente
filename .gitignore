@@ -1,0 +1,35 @@
+# == Rails ====================================================
+
+# Ignorar logs e arquivos temporários do Rails
+/backend/log/*
+/backend/tmp/*
+/backend/.byebug_history
+
+# Ignorar credenciais do Rails
+/backend/config/master.key
+/backend/config/credentials.yml.enc
+
+# Se por acaso houver algum SQLite residual
+*.sqlite3
+*.sqlite3-journal
+
+# Gems instaladas pelo Bundler
+/backend/vendor/bundle
+
+# == Docker ===================================================
+
+# Caso você use arquivos de override ou .env locais para Compose
+**/docker-compose.override.yml
+**/*.env
+
+# Volumes PostgreSQL (normalmente esse diretório não é versionado)
+/db-data/*
+
+# == Arquivos de sistema ======================================
+
+.DS_Store
+Thumbs.db
+
+# == Node (se for usado no frontend algum dia) =================
+
+node_modules/
