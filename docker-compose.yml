@@ -17,14 +17,21 @@ services:
     build:
       context: ./backend  # Diretório onde o Dockerfile do Rails está
       dockerfile: Dockerfile  # Nome do Dockerfile que vai ser usado
+      args:
+        # Passar o SECRET_KEY_BASE do .env para dentro do build
+        SECRET_KEY_BASE: ${SECRET_KEY_BASE}
     restart: always 
     volumes:
-      - ./backend:/app  # Vai montar o código do host em /app dentro do conteiner
+      - ./backend:/rails  # Vai montar o código do host em /app dentro do conteiner
+    working_dir: /rails
     ports:
       - "3000:3000"   # Vai mapear a porta 3000 do host para o container
+    env_file:
+      # Vai carregar .env para runtime (DATABASE_URL, RAILS_ENV, SECRET_KEY_BASE, etc)
+      - ./.env
     environment:  # Variáveis de ambiente para o Rails
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       DATABASE_URL: postgres://postgres:senha123@db:5432/app_development
-
       RAILS_ENV: development  # Define o ambiente Rails como "development"
     depends_on:
       - db  # Vai garantir que o banco inicie antes do Rails

@@ -4,13 +4,19 @@
 ARG RUBY_VERSION=3.2.8
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim AS base
 
+# Receber o SECRET_KEY_BASE como build-arg e o expõe como ENV
+ARG SECRET_KEY_BASE
+ENV SECRET_KEY_BASE=${SECRET_KEY_BASE} 
+
 # Install packages needed for deployment
 RUN apt-get update -qq && apt-get install -y \
     build-essential \
     libpq-dev \
     libyaml-dev \
     nodejs \
-    postgresql-client && \
+    postgresql-client \
+    git \
+    vim-tiny && \
     rm -rf /var/lib/apt/lists/*
 
 
@@ -18,8 +24,8 @@ RUN apt-get update -qq && apt-get install -y \
 WORKDIR /rails
 
 # Set production environment
-ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
+# ENV RAILS_ENV="production" \
+ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
@@ -47,7 +53,8 @@ COPY . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+RUN RAILS_ENV=production SECRET_KEY_BASE=${SECRET_KEY_BASE} \
+    ./bin/rails assets:precompile --trace 2>&1 | tee /tmp/assets_precompile.log
 
 
 # Final stage for app image
@@ -60,7 +67,7 @@ COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
+    chown -R rails:rails db log storage tmp config
 USER rails:rails
 
 # Entrypoint prepares the database.
