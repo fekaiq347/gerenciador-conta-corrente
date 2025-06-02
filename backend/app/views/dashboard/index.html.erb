@@ -1,0 +1,21 @@
+<h1>Painel do Correntista</h1>
+
+<p>Olá, <%= current_correntista.nome %>!</p>
+<p>Seu perfil: <%= current_correntista.perfil.upcase %></p>
+
+<%# Se quiser exibir saldo%>
+<p>Saldo atual: R$ <%= number_to_currency(current_correntista.conta_corrente.saldo, unit: "") %></p>
+
+<%# Exemplo qualquer de menu protegido %>
+<nav>
+  <ul>
+    <li><%= link_to "Extrato", extrato_path %></li>
+    <li><%= link_to "Saque", saque_path %></li>
+    <li><%= link_to "Depósito", deposito_path %></li>
+    <li><%= link_to "Transferência", transferencia_path %></li>
+    <% if current_correntista.vip? %>
+      <li><%= link_to "Solicitar visita do gerente", solicitacao_visitas_path %></li>
+    <% end %>
+    <li><%= link_to "Sair (Trocar de usuário)", logout_path, method: :delete %></li>
+  </ul>
+</nav>

@@ -1,11 +1,11 @@
 class ContaCorrente < ApplicationRecord
   belongs_to :correntista
-
+  has_many :movimentacoes, dependent: :destroy
   # Validações
   validates :correntista, presence:true
-  validates :saldo_nao_excede_limite_por_perfil
+  validate :saldo_nao_excede_limite_por_perfil
   validates :esta_negativo, inclusion: { in: [true, false] }
-
+  validates :correntista_id, uniqueness: true
   # Callback pra controlar flags de negativo e timestamp
   before_save :atualizar_indicadores_negativo
 

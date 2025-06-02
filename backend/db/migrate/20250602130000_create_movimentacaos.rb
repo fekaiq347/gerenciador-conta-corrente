@@ -6,7 +6,7 @@ class CreateMovimentacaos < ActiveRecord::Migration[7.1]
       t.decimal :valor, precision: 12, scale: 2, null:false
       t.datetime :data_hora, null: false
       t.string :descricao, null: false
-      t.references :transferencia, null: false, foreign_key: true
+      t.references :transferencia, null: true, foreign_key: { to_table: :transferencias }
 
       t.timestamps
     end

@@ -11,6 +11,15 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header>
+      <% if logged_in? %>
+        <p>Bem vindo, <%= current_correntista.nome %>!</p>
+        <%= link_to "Sair (Trocar de usuário)", logout_path, method: :delete, data: { confirm: "Deseja realmente sair?" } %>
+      <% end %>
+    </header>
+
+    <main>
+      <%= yield %>
+    </main>
   </body>
 </html>

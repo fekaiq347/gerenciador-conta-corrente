@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_02_134741) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_02_193755) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_02_134741) do
     t.datetime "data_hora_primeiro_negativo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["correntista_id"], name: "index_conta_correntes_on_correntista_id"
+    t.index ["correntista_id"], name: "index_conta_correntes_on_correntista_id", unique: true
   end
 
   create_table "correntistas", force: :cascade do |t|
@@ -31,6 +31,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_02_134741) do
     t.integer "perfil", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "saldo", precision: 10, scale: 2, default: "0.0", null: false
     t.index ["conta_numero"], name: "index_correntistas_on_conta_numero", unique: true
   end
 
@@ -40,12 +41,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_02_134741) do
     t.decimal "valor", precision: 12, scale: 2, null: false
     t.datetime "data_hora", null: false
     t.string "descricao", null: false
-    t.bigint "transferencias_id", null: false
+    t.bigint "transferencia_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["conta_corrente_id", "data_hora"], name: "index_movimentacaos_on_conta_corrente_id_and_data_hora"
     t.index ["conta_corrente_id"], name: "index_movimentacaos_on_conta_corrente_id"
-    t.index ["transferencias_id"], name: "index_movimentacaos_on_transferencias_id"
+    t.index ["transferencia_id"], name: "index_movimentacaos_on_transferencia_id"
   end
 
   create_table "solicitacao_visitas", force: :cascade do |t|
@@ -57,7 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_02_134741) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["correntista_id"], name: "index_solicitacao_visitas_on_correntista_id"
-    t.index ["movimentacao_debito_id"], name: "index_solicitacao_visitas_on_movimentacao_debito_id"
+    t.index ["movimentacao_debito_id"], name: "index_solicitacao_visitas_on_movimentacao_debito_id", unique: true
   end
 
   create_table "transferencias", force: :cascade do |t|
@@ -82,7 +83,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_02_134741) do
 
   add_foreign_key "conta_correntes", "correntistas"
   add_foreign_key "movimentacaos", "conta_correntes"
-  add_foreign_key "movimentacaos", "transferencias", column: "transferencias_id"
+  add_foreign_key "movimentacaos", "transferencias"
   add_foreign_key "solicitacao_visitas", "correntistas"
   add_foreign_key "solicitacao_visitas", "movimentacaos", column: "movimentacao_debito_id"
   add_foreign_key "transferencias", "conta_correntes", column: "destino_conta_id"

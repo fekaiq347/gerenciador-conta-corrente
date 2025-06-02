@@ -1,9 +1,29 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# db/seeds.rb
+
+# Senha em texto simples 
+
+c = Correntista.find_or_initialize_by(conta_numero: "12345")
+  c.nome      = "Cliente Normal"
+  c.senha     = "1010"
+  c.perfil    = "NORMAL"
+
+  c.build_conta_corrente(
+    saldo: 1000.00,
+    esta_negativo: false,
+    data_hora_primeiro_negativo: nil
+  )
+
+  c.save!
+
+c = Correntista.find_or_initialize_by(conta_numero: "54321")
+  c.nome      = "Cliente VIP"
+  c.senha     = "0101"
+  c.perfil    = "VIP"
+  
+  c.build_conta_corrente(
+    saldo: 5000.00,
+    esta_negativo: false,
+    data_hora_primeiro_negativo: nil
+  )
+
+  c.save!

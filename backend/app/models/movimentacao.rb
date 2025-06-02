@@ -1,6 +1,8 @@
 class Movimentacao < ApplicationRecord
   belongs_to :conta_corrente
   belongs_to :transferencia, optional: true
+  
+  has_one :solicitacao_visita, foreign_key: "movimentacao_debito_id", dependent: :nullify
 
   enum tipo: {
     SAQUE:                      0,
