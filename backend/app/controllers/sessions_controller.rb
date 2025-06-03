@@ -1,28 +1,39 @@
 class SessionsController < ApplicationController
+  skip_before_action :require_login, only: %i[new create]
 
-  def create
-    logger.debug ">>>> Entrou em SessionsController#create – params: #{params.inspect}"
-    puts      ">>>> Entrou em SessionsController#create – params: #{params.inspect}" 
-    
+  def new
+    redirect_to dashboard_path, status: :see_other if logged_in?
+  end
+
+  def create 
     conta = params[:conta_numero]
     senha = params[:senha]
 
+    unless conta =~ /\A\d{5}\z/
+      flash.now[:alert] = "O número da conta deve conter exatamente 5 dígitos numéricos."
+      render :new, status: :unprocessable_entity and return
+    end
+
+    unless senha =~ /\A\d{4}\z/
+      flash.now[:alert] = "A senha deve conter exatamente 4 dígitos numéricos."
+      render :new, status: :unprocessable_entity and return
+    end
     # Busca correntista pelo número da conta
     correntista = Correntista.find_by(conta_numero: conta)
 
     if correntista.nil?
       flash.now[:alert] = "Conta inexistente."
-      render :new and return
+      render :new, status: :unprocessable_entity and return
     end
 
     # Comparar senha em texto simples
     if correntista.senha == senha
-      session[:correntista_id] = correntista_id
+      session[:correntista_id] = correntista.id
       flash[:notice] = "Login realizado com sucesso."
-      redirect_to root_path
+      redirect_to dashboard_path, status: :see_other
     else
       flash.now[:alert] = "Senha incorreta."
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

@@ -5,13 +5,13 @@ class Movimentacao < ApplicationRecord
   has_one :solicitacao_visita, foreign_key: "movimentacao_debito_id", dependent: :nullify
 
   enum tipo: {
-    SAQUE:                      0,
-    DEPOSITO:                   1,
-    TRANSFERENCIA_OUT:          2,
-    TRANSFERENCIA_IN:           3,
-    TARIFA_TRANSFERENCIA:       4,
-    PENALIDADE_SALDO_NEGATIVO:  5,
-    DEBITO_VISITA_GERENTE:      6
+    saque:                      0,
+    deposito:                   1,
+    transferencia_out:          2,
+    transferencia_in:           3,
+    tarifa_transferencia:       4,
+    penalidade_saldo_negativo:  5,
+    debito_visita_gerente:      6
   }
 
   validates :conta_corrente, presence: true
@@ -35,13 +35,13 @@ class Movimentacao < ApplicationRecord
   private
 
     def transferencia_deve_ser_presente_quando_necessario
-      tipos_com_transferencia = %w[TRANSFERENCIA_OUT TRANSFERENCIA_IN TARIFA_TRANSFERENCIA]
+      tipos_com_transferencia = %w[transferencia_out transferencia_in tarifa_transferencia]
 
       if tipos_com_transferencia.include?(tipo) && transferencia_id.blank?
         errors.add(:transferencia, "deve ser informada para tipo #{tipo}") 
       end
 
-      unless tipos_com_transferencia.include?(tipo) || transferencia_id.blank?
+      if transferencia_id.present? && !tipos_com_transferencia.include?(tipo)
         errors.add(:transferencia, "só pode ser preenchida para tipos de transferência")
       end
   end
@@ -50,11 +50,11 @@ class Movimentacao < ApplicationRecord
     return if valor.blank? || tipo.blank?
 
     case tipo
-    when "SAQUE", "TRANSFERENCIA_OUT", "TARIFA_TRANSFERENCIA", "PENALIDADE_SALDO_NEGATIVO", "DEBITO_VISITA_GERENTE"
+    when "saque", "transferencia_out", "tarifa_transferencia", "penalidade_saldo_negativo", "debito_visita_gerente"
       if valor >= 0
         errors.add(:valor, "deve ser negativo para o tipo #{tipo}")
       end
-    when "DEPOSITO", "TRANSFERENCIA_IN"
+    when "deposito", "transferencia_in"
       if valor <= 0
         errors.add(:valor, "deve ser positivo para o tipo #{tipo}")
       end

@@ -12,11 +12,19 @@
 
   <body>
     <header>
-      <% if logged_in? %>
-        <p>Bem vindo, <%= current_correntista.nome %>!</p>
-        <%= link_to "Sair (Trocar de usuário)", logout_path, method: :delete, data: { confirm: "Deseja realmente sair?" } %>
-      <% end %>
+      
     </header>
+
+    <%# if flash[:notice] %>
+      <%#<div class="flash-notice">
+        <%= flash[:notice] %>
+      </div %>
+    <%# end %>
+    <%# if flash[:alert] %>
+      <%# <div class="flash-alert">
+        <%= flash[:alert] %>
+      </div %>
+      <%# end %>
 
     <main>
       <%= yield %>

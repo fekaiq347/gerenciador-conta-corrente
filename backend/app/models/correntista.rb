@@ -5,8 +5,8 @@ class Correntista < ApplicationRecord
   has_many :solicitacao_visitas, dependent: :destroy
   # enum para perfil (0 -> NORMAL; 1 -> VIP)
   enum perfil: {
-    NORMAL: 0,
-    VIP: 1
+    normal: 0,
+    vip: 1
   }
 
   # Validações básicas

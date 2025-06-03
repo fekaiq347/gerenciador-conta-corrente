@@ -3,6 +3,6 @@ class DashboardController < ApplicationController
 
   def index
     # um exemplo qualquer
-    @saldo = current_correntista.conta_corrente.saldo
+    @conta = current_correntista.conta_corrente
   end
 end

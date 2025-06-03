@@ -4,15 +4,15 @@
   <p style="color: red;"><%= flash.now[:alert] %></p>
 <% end %>
 
-<%= form_with url: login_path, method: :post, local: true do |f| %>
+<%= form_with url: login_path, method: :post, local: true, data: { turbo: false } do %>
   <div>
     <%= label_tag :conta_numero, "Número da Conta (5 dígitos):" %><br>
-    <%= text_field_tag :conta_numero, params[:conta_numero], maxlength: 5, pattern: "\d{5}", required: true %>
+    <%= text_field_tag :conta_numero, params[:conta_numero], maxlength: 5, required: true %>
   </div>
 
   <div>
     <%= label_tag :senha, "Senha (4 dígitos):" %><br>
-    <%= password_field_tag :senha, nil, maxlength: 4, pattern: "\d{4}", required: true %>
+    <%= password_field_tag :senha, nil, maxlength: 4, required: true %>
   </div>
 
   <div>

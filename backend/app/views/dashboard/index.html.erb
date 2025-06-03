@@ -9,13 +9,13 @@
 <%# Exemplo qualquer de menu protegido %>
 <nav>
   <ul>
-    <li><%= link_to "Extrato", extrato_path %></li>
-    <li><%= link_to "Saque", saque_path %></li>
-    <li><%= link_to "Depósito", deposito_path %></li>
-    <li><%= link_to "Transferência", transferencia_path %></li>
+    <li><%= link_to "Extrato", extrato_conta_path(@conta) %></li>
+    <li><%= link_to "Saque", new_saque_conta_path(@conta) %></li>
+    <li><%= link_to "Depósito", new_deposito_conta_path(@conta), class: "btn btn-primary" %></li>
+    <li><%= link_to "Transferência", new_transferencia_conta_path(@conta) %></li>
     <% if current_correntista.vip? %>
-      <li><%= link_to "Solicitar visita do gerente", solicitacao_visitas_path %></li>
+      <li><%= link_to "Solicitar visita do gerente", new_visita_conta_path(@conta) %></li>
     <% end %>
-    <li><%= link_to "Sair (Trocar de usuário)", logout_path, method: :delete %></li>
+    <li><%= link_to "Sair (Trocar de usuário)", logout_path, method: :delete, data: { confirm: "Deseja realmente sair?" } %></li>
   </ul>
 </nav>

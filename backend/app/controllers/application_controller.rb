@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   helper_method :current_correntista, :logged_in?
 
+  before_action :require_login
+
   private
 
   def current_correntista
