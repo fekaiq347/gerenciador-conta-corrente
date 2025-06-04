@@ -1,6 +1,6 @@
 class ContaCorrente < ApplicationRecord
   belongs_to :correntista
-  has_many :movimentacoes, dependent: :destroy
+  has_many :movimentacoes, class_name: "Movimentacao", foreign_key: "conta_corrente_id", dependent: :destroy
   # Validações
   validates :correntista, presence:true
   validate :saldo_nao_excede_limite_por_perfil
@@ -47,7 +47,7 @@ class ContaCorrente < ApplicationRecord
     return if correntista.nil?
 
     # Usuário normal e saldo menor que 0, block
-    if correntista.NORMAL? && (saldo || 0.0) < 0.0
+    if correntista.normal? && (saldo || 0.0) < 0.0
       errors.add(:saldo, "conta não pode ficar negativa para perfil NORMAL")
     end
   end

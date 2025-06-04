@@ -1,0 +1,60 @@
+<h1>Extrato da Conta <%= @conta.correntista.conta_numero %></h1>
+
+<%# Exibe mensagens de flash (sucesso ou erro) %>
+<% if flash[:notice] %>
+  <p style="color: green; margin-bottom: 1rem;"><%= flash[:notice] %></p>
+<% end%>
+<% if flash[:alert] %>
+  <p style="color: red; margin-bottom: 1rem;"><%= flash[:alert] %></p>
+<% end %>
+
+<p><strong>Saldo atual:</strong> R$ <%= number_to_currency(@conta.saldo, unit: "", separator: ",", delimiter: ".") %></p>
+
+<%# Tabela de movimentações, só que na ordem decrescente %>
+<table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+  <thead>
+    <tr style="background-color: #f0f0f0;">
+      <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Data e Hora</th>
+      <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Tipo</th>
+      <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Descrição</th>
+      <th style="padding: 8px; border: 1px solid #ccc; text-align: right;">Valor (R$)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @movimentacoes.any? %>
+      <% @movimentacoes.each do |mov| %>
+        <tr>
+          <%# Formata data/hora no padrão local %>
+          <td style="padding: 8px; border: 1px solid #ccc;">
+            <%= l mov.data_hora, format: "%d/%m/%Y %H:%M" %>
+          </td>
+
+          <%# Exibe o tipo de movimentação: deposito, saque, penalidade, etc %>
+          <td style="padding: 8px; border: 1px solid #ccc;">
+            <%= mov.tipo.to_s.humanize.capitalize %>
+          </td>
+
+          <%# Exibe a descrição %>
+          <td style="padding: 8px; border: 1px solid #ccc;">
+            <%= mov.descricao %>
+          </td>
+
+          <%# Exibe o valor com casas decimais e separador de milhar %>
+          <td style="padding: 8px; border: 1px solid #ccc; text-align: right;">
+            <%= number_to_currency(mov.valor, unit: "", separator: ",", delimiter: ".") %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="4" style="padding: 8px; border: 1px solid #ccc; text-align: center;">
+          Não há movimentações para esta conta.
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div style="margin=top: 2rem;">
+  <%= link_to "Voltar ao Dashboard", dashboard_path, class: "btn btn-link" %>
+</div>

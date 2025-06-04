@@ -1,6 +1,6 @@
 class MovimentacoesController < ApplicationController
   before_action :require_login
-  before_action :set_conta, only: [:saque, :realizar_saque, :new_deposito, :create_deposito]
+  before_action :set_conta, only: [:saque, :realizar_saque, :new_deposito, :create_deposito, :extrato]
   
   # get /contas/:conta_id/saque
   def saque
@@ -29,17 +29,24 @@ class MovimentacoesController < ApplicationController
 
   # post /conta/deposito
   def create_deposito
-    valor = params[:valor].to_s.gsub(",", ".").to_f
+    raw_valor = params[:valor_deposito].to_s.strip
+    valor = raw_valor.gsub(",", ".").to_f
 
     begin
       DepositoService.new(conta: @conta, valor_deposito: valor).executar!
-      flash[:notice] = "Depósito de R$%2.f realizado com sucesso." % valor
-      redirect_to dashboard_path, status: :see_other
+      flash[:notice] = "Depósito de R$%.2f realizado com sucesso." % valor
+      redirect_to extrato_conta_path(@conta), status: :see_other
     rescue StandardError => e
       flash.now[:alert] = e.message
-      render :new_deposito
+      render :new_deposito, status: :unprocessable_entity
     end
   end
+
+  def extrato
+    @movimentacoes = @conta.movimentacoes.order(created_at: :desc)
+  end
+
+
 
   private
 
