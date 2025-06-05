@@ -1,0 +1,23 @@
+<h1>Saque</h1>
+
+<% if flash.any? %>
+  <div style="margin-bottom: 1rem;">
+    <% flash.each do |tipo, msg| %>
+      <p style="<%= tipo == 'notice' ? 'color: green;' : 'color: red;' %>">
+        <%= msg %>
+      </p>
+    <% end %>
+  </div>
+<% end %>
+
+<%= form_with url: create_saque_conta_path(@conta), method: :post, local: true, data: { turbo: false } do |f| %>
+  <div>
+    <%= f.label :valor_saque, "Valor do Saque (R$):" %><br>
+    <%= f.text_field :valor_saque, required:true, pattern: "[0-9]+([.,][0-9]{2})?", placeholder: "0,00" %>
+  </div>
+
+  <div style="margin-top: 1rem;">
+    <%= f.submit "Confirmar Saque", class: "btn btn-primary" %>
+    <%= link_to "Cancelar", dashboard_path, style: "margin-left: 1rem;" %>
+  </div>
+<% end %>

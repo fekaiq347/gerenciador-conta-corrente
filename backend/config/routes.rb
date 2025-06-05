@@ -15,30 +15,30 @@ Rails.application.routes.draw do
   resources :contas, only: [] do
     member do
       # ─── Saque ───────────────────────────────────────────────────────────
-      # GET  /contas/:conta_id/saque     → MovimentacoesController#saque
-      # POST /contas/:conta_id/saque     → MovimentacoesController#realizar_saque
+      # GET  /contas/:conta_id/saque     -> MovimentacoesController#saque
+      # POST /contas/:conta_id/saque     -> MovimentacoesController#realizar_saque
       get  "saque", to: "movimentacoes#saque",            as: :new_saque
       post "saque", to: "movimentacoes#realizar_saque",   as: :create_saque
 
       # ─── Depósito ────────────────────────────────────────────────────────
-      # GET  /contas/:conta_id/deposito  → MovimentacoesController#new_deposito
-      # POST /contas/:conta_id/deposito  → MovimentacoesController#create_deposito
+      # GET  /contas/:conta_id/deposito  -> MovimentacoesController#new_deposito
+      # POST /contas/:conta_id/deposito  -> MovimentacoesController#create_deposito
       get  "deposito", to: "movimentacoes#new_deposito",    as: :new_deposito
       post "deposito", to: "movimentacoes#create_deposito", as: :create_deposito
 
       # ─── Transferência ───────────────────────────────────────────────────
-      # GET  /contas/:conta_id/transferencia  → TransferenciasController#new
-      # POST /contas/:conta_id/transferencia  → TransferenciasController#create
+      # GET  /contas/:conta_id/transferencia  -> TransferenciasController#new
+      # POST /contas/:conta_id/transferencia  -> TransferenciasController#create
       get  "transferencia", to: "transferencias#new",    as: :new_transferencia
       post "transferencia", to: "transferencias#create", as: :create_transferencia
 
       # ─── Extrato ──────────────────────────────────────────────────────────
-      # GET /contas/:conta_id/extrato   → MovimentacoesController#extrato
+      # GET /contas/:conta_id/extrato   -> MovimentacoesController#extrato
       get  "extrato", to: "movimentacoes#extrato",        as: :extrato
 
-      # ─── Visita do gerente (somente para VIP) ─────────────────────────────
-      # GET  /contas/:conta_id/visita   → VisitasController#new
-      # POST /contas/:conta_id/visita   → VisitasController#create
+      # ─── Visita do gerente (apenas VIP) ───────────────────────────────────
+      # GET  /contas/:conta_id/visita   -> VisitasController#new
+      # POST /contas/:conta_id/visita   -> VisitasController#create
       get  "visita", to: "visitas#new",    as: :new_visita
       post "visita", to: "visitas#create", as: :create_visita
     end

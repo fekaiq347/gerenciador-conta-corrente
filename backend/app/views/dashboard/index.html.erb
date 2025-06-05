@@ -1,5 +1,15 @@
 <h1>Painel do Correntista</h1>
 
+<% if flash.any? %>
+  <div style="margin-bottom: 1rem;">
+    <% flash.each do |tipo, mensagem| %>
+      <p style="<%= tipo == 'notice' ? 'color: green; font-weight: bold;' : 'color: red; font-weight: bold;' %>">
+        <%= mensagem %>
+      </p>
+    <% end %>
+  </div>
+<% end %>
+
 <p>Olá, <%= current_correntista.nome %>!</p>
 <p>Seu perfil: <%= current_correntista.perfil.upcase %></p>
 

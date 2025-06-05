@@ -21,7 +21,7 @@ class ContaCorrente < ApplicationRecord
   end
 
   def penalidade_acumulada
-      return 0 unless saldo.negativo? && data_hora_primeiro_negativo
+      return 0 unless saldo_negativo? && data_hora_primeiro_negativo
 
       saldo_neg_abs = saldo.abs
       (saldo_neg_abs * 0.001 * minutos_em_negativo).round(2)

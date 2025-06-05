@@ -1,0 +1,60 @@
+<h1>Transferência</h1>
+
+<% if flash.any? %>
+  <div style="margin-bottom: 1rem;">
+    <% flash.each do |tipo, mensagem| %>
+      <p style="<%= tipo.to_s == 'notice' ? 'color: green; font-weight: bold;' : 'color: red; font-weight: bold;' %>">
+        <%= mensagem %>
+      </p>
+    <% end %>
+  </div>
+<% end %>
+
+<%# Se houver erros de validação em @transferencia, exibimos aqui %>
+<% if @transferencia.errors.any? %>
+  <div style="color: red; margin-bottom: 1rem;">
+    <h2><%= pluralize(@transferencia.errors.count, "erro") %> impediram a transferência:</h2>
+    <ul>
+      <% @transferencia.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @transferencia,
+              url: create_transferencia_conta_path(@conta_origem),
+              local: true,
+              data: { turbo: false } do |f| %>
+
+  <%# Exibe, em texto, a conta de origem apenas para referência %>
+  <p>
+    <strong>Conta de origem:</strong>
+    <%= @conta_origem.correntista.conta_numero %>
+  </p>
+
+  <div>
+    <%= f.label :destino_conta_numero, "Número da conta de destino (5 dígitos):" %><br>
+    <%= f.text_field :destino_conta_numero,
+                     required: true,
+                     pattern: "[0-9]{5}",
+                     placeholder: "Ex.: 12345",
+                     value: @transferencia.destino_conta_numero %>
+  </div>
+
+  <div style="margin-top: 1rem;">
+    <%= f.label :valor_transferido, "Valor da Transferência (R$):" %><br>
+    <%= f.text_field :valor_transferido,
+                     required: true,
+                     pattern: "[0-9]+([.,][0-9]{2})?",
+                     placeholder: "0,00",
+                     value: @transferencia.valor_transferido %>
+  </div>
+
+  <div style="margin-top: 1rem;">
+    <%= f.submit "Confirmar Transferência", class: "btn btn-primary" %>
+    <%= link_to "Cancelar", dashboard_path, style: "margin-left: 1rem;" %>
+  </div>
+<% end %>
+
+

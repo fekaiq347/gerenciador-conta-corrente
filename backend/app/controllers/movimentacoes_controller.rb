@@ -9,16 +9,16 @@ class MovimentacoesController < ApplicationController
 
   # post /contas/:conta_id/realizar_saque
   def realizar_saque
-    valor = params[:valor_saque].to_f
+    raw_valor = params[:valor_saque].to_s.strip
+    valor = raw_valor.gsub(",", ".").to_f
 
     begin
       SaqueService.new(conta: @conta, valor_saque: valor).executar!
-
       flash[:notice] = "Saque de R$%.2f realizado com sucesso." % valor
       redirect_to extrato_conta_path(@conta), status: :see_other
     rescue StandardError => e
       flash[:alert] = e.message
-      redirect_to saque_conta_path(@conta), status: :see_other
+      render :saque, status: :unprocessable_entity
     end
   end
 
