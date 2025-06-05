@@ -1,0 +1,10 @@
+<h1>Solicitar Visita do Gerente</h1>
+
+<p>Confirma débito de <strong>R$50,00</strong> e envio da solicitação de visita do gerente?</p>
+
+<%= form_with url: create_visita_conta_path(@conta), method: :post, local: true do |f| %>
+  <div>
+    <%= f.submit "Confirmar", class: "btn btn-primary" %>
+    <%= link_to "Cancelar", dashboard_path, class: "btn btn-secondary", style: "margin-left: 1rem;" %>
+  </div>
+<% end %>

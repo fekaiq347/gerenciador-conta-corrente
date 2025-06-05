@@ -63,7 +63,7 @@ class TransferenciaService
     Movimentacao.create!(
       conta_corrente: destino,
       tipo: :transferencia_in,
-      descricao: "Recebimento de R$%.2f da conta #{origem.conta_numero}" % valor_transferido,
+      descricao: "Recebimento de R$%.2f da conta #{origem.correntista.conta_numero}" % valor_transferido,
       valor: valor_transferido,
       data_hora: Time.current,
       transferencia: transferencia
