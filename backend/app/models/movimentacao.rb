@@ -4,6 +4,7 @@ class Movimentacao < ApplicationRecord
   
   has_one :solicitacao_visita, foreign_key: "movimentacao_debito_id", dependent: :nullify
 
+  # lembrar de deixar minúsuclo
   enum tipo: {
     saque:                      0,
     deposito:                   1,

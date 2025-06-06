@@ -9,7 +9,5 @@ class CreateContaCorrentes < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-  # Para garantir 1:1
-  # add_index :conta_correntes, :correntista_id, unique: true
   end
 end

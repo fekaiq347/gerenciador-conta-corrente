@@ -1,11 +1,7 @@
-<!-- app/views/movimentacoes/extrato.html.erb -->
-
-<!-- Container principal (opcional: você já pode estar dentro de <main class="container">) -->
 <div class="mb-4">
   <!-- Título da página -->
   <h1 class="mb-3">Extrato da Conta <%= @conta.correntista.conta_numero %></h1>
 
-  <!-- Link “Voltar ao Dashboard” logo abaixo do título -->
   <div class="mb-4">
     <%= link_to "Voltar ao Dashboard",
                 dashboard_path,

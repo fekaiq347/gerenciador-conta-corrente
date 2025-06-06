@@ -4,7 +4,7 @@ class SolicitacaoVisita < ApplicationRecord
   belongs_to :correntista
   belongs_to :movimentacao_debito, class_name: "Movimentacao", optional: true
 
-  # Sem enum!
+  # sem enum!
   
   # Validações
   

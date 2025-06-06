@@ -14,9 +14,7 @@
   </div>
 <% end %>
 
-        <!-- ===========================
-             INÍCIO: Painel do Correntista
-             =========================== -->
+             <!-- Painel do Correntista -->
         <div class="row justify-content-center">
           <div class="col-md-8">
             <!-- Card com informações do correntista -->
@@ -24,7 +22,7 @@
               <div class="card-body">
                 <h2 class="card-title">Detalhes da Conta</h2>
                 <h5 class="card-subtitle mb-3 text-muted">
-                  Olá, <%= current_correntista.nome %>!
+                  Olá, <%= "#{saudacao_por_horario}" %>!
                 </h5>
 
                 <!-- Perfil e saldo, lado a lado -->
@@ -69,7 +67,7 @@
                               class: "btn btn-outline-primary",
                               data: { turbo: false } %>
 
-                <!-- Depósito (botão destacado) -->
+                <!-- Depósito -->
                   <%= link_to "Depósito",
                               new_deposito_conta_path(@conta),
                               class: "btn btn-outline-primary",
@@ -81,6 +79,7 @@
                               class: "btn btn-outline-primary",
                               data: { turbo: false } %>
 
+                <!-- Solicitação de visita do gerente (Verificar TIPO de Correntista) -->
                  <% if current_correntista.vip? %>
                   <%= link_to "Solicitar visita do gerente", 
                               new_visita_conta_path(@conta),
@@ -99,6 +98,3 @@
           </div>
         </div>
       
-        <!-- ===========================
-             FIM: Painel do Correntista
-             =========================== -->

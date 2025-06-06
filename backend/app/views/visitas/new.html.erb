@@ -1,17 +1,8 @@
-<!-- app/views/movimentacoes/visita.html.erb -->
-
 <div class="mb-4">
   <!-- 1. Título da página -->
   <h1 class="mb-3">Solicitar Visita do Gerente</h1>
 
-  <!-- 2. Link “Voltar ao Dashboard” -->
-  <div class="mb-4">
-    <%= link_to "Voltar ao Dashboard",
-                dashboard_path,
-                class: "btn btn-outline-primary" %>
-  </div>
-
-  <!-- 3. Mensagens de flash (notice/alert) -->
+  <!-- Mensagens de flash (notice/alert) -->
   <% if flash[:notice].present? %>
     <div class="alert alert-success">
       <%= flash[:notice] %>
@@ -23,7 +14,7 @@
     </div>
   <% end %>
 
-  <!-- 4. Card contendo a confirmação de débito -->
+  <!-- Card contendo a confirmação de débito -->
   <div class="card shadow-sm">
     <div class="card-body">
       <!-- Parágrafo de confirmação -->
@@ -33,7 +24,7 @@
         e envio da solicitação de visita do gerente?
       </p>
 
-      <!-- 5. Formulário de confirmação -->
+      <!--  Formulário de confirmação -->
       <%= form_with url: create_visita_conta_path(@conta),
                     method: :post,
                     local: true do |f| %>

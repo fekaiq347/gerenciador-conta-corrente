@@ -1,11 +1,8 @@
-<!-- app/views/sessions/new.html.erb -->
-
 <div class="container vh-100 d-flex justify-content-center align-items-center">
   <div class="col-md-4">
     <!-- Título centralizado -->
     <h1 class="text-center mb-4">Login do Correntista</h1>
 
-    <!-- Exibe mensagem de erro de forma estilizada, se existir -->
     <% if flash.now[:alert].present? %>
       <div class="alert alert-danger" role="alert">
         <%= flash.now[:alert] %>

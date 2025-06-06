@@ -3,7 +3,7 @@ class Correntista < ApplicationRecord
   # 1:1 com ContaCorrente
   has_one :conta_corrente, dependent: :destroy
   has_many :solicitacao_visitas, dependent: :destroy
-  # enum para perfil (0 -> NORMAL; 1 -> VIP)
+
   enum perfil: {
     normal: 0,
     vip: 1

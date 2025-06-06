@@ -1,30 +1,21 @@
 class Transferencia < ApplicationRecord
-  # ------------------------------------------------------------
   # Relacionamentos
-  # ------------------------------------------------------------
   # origem_conta e destino_conta são registros da tabela conta_correntes
   belongs_to :origem_conta,  class_name: "ContaCorrente", foreign_key: "origem_conta_id"
   belongs_to :destino_conta, class_name: "ContaCorrente", optional: true,  foreign_key: "destino_conta_id"
 
-  # Toda transferência poderá gerar várias movimentações
   has_many :movimentacoes, dependent: :destroy
 
-  # ------------------------------------------------------------
-  # Atributo virtual para receber o número de conta (5 dígitos)
-  # ------------------------------------------------------------
-  # Esse campo NÃO existe na tabela, mas será preenchido pelo form
+  # atributo virtual para receber o número de conta (5 dígitos)
+  # lembrando que sse campo NÃO existe na tabela, mas será preenchido pelo form
   # e usado para buscar o correntista → conta_corrente de destino.
   attr_accessor :destino_conta_numero
 
-  # ------------------------------------------------------------
   # Callbacks
-  # ------------------------------------------------------------
-  # Antes de validar, iremos converter destino_conta_numero → destino_conta_id
   before_validation :atribui_destino_conta_id
   before_validation :normalizar_valor_transferido
-  # ------------------------------------------------------------
+  
   # Validações
-  # ------------------------------------------------------------
 
   # valida se a conta de origem está presente (deve ser setada manualmente no controller)
   validates :origem_conta, presence: true
@@ -35,7 +26,7 @@ class Transferencia < ApplicationRecord
             format: { with: /\A[0-9]{5}\z/, message: "deve conter exatamente 5 dígitos numéricos" },
             if: -> { destino_conta_id.blank?}
 
-  # após o callback, verifica se destino_conta_id foi preenchido corretamente
+  # dps do callback, verifica se destino_conta_id foi preenchido corretamente
   validates :destino_conta, presence: { message: "não encontrada para o número informado" }
 
   # Garante que origem e destino sejam diferentes
@@ -51,9 +42,7 @@ class Transferencia < ApplicationRecord
   validates :data_hora,
             presence: { message: "não pode ficar em branco" }
 
-  # ------------------------------------------------------------
   # Métodos privados
-  # ------------------------------------------------------------
   private
 
   def normalizar_valor_transferido

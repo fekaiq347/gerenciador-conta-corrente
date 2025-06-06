@@ -10,10 +10,6 @@ class CreateSolicitacaoVisitas < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    # Índice em correntista_id para consultas
-    # add_index :solicitacao_visitas, :correntista_id
 
-    # Índice único para garantir que cada mov de débito seja associada a uma solicitação só
-    # add_index :solicitacao_visitas, :movimentacao_debito_id, unique: true
   end
 end

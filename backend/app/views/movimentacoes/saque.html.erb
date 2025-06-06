@@ -1,15 +1,6 @@
-<!-- app/views/movimentacoes/saque.html.erb -->
-
 <div class="mb-4">
   <!-- Título da página -->
   <h1 class="mb-3">Saque</h1>
-
-  <!-- Link “Voltar ao Dashboard” logo abaixo do título -->
-  <div class="mb-4">
-    <%= link_to "Voltar ao Dashboard",
-                dashboard_path,
-                class: "btn btn-outline-primary" %>
-  </div>
 
   <!-- Mensagens de flash estilizadas com Bootstrap -->
   <% if flash[:notice].present? %>

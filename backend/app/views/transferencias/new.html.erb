@@ -1,17 +1,8 @@
-<!-- app/views/movimentacoes/transferencia.html.erb -->
-
 <div class="mb-4">
   <!-- 1. Título da página -->
   <h1 class="mb-3">Transferência</h1>
 
-  <!-- 2. Link “Voltar ao Dashboard” -->
-  <div class="mb-4">
-    <%= link_to "Voltar ao Dashboard",
-                dashboard_path,
-                class: "btn btn-outline-primary" %>
-  </div>
-
-  <!-- 3. Mensagens de flash (notice/alert) -->
+  <!--  Mensagens de flash (notice/alert) -->
   <% if flash[:notice].present? %>
     <div class="alert alert-success">
       <%= flash[:notice] %>
@@ -23,7 +14,7 @@
     </div>
   <% end %>
 
-  <!-- 4. Erros de validação em @transferencia -->
+  <!--  Erros de validação em @transferencia -->
   <% if @transferencia.errors.any? %>
     <div class="alert alert-danger">
       <ul class="mb-0">
@@ -34,7 +25,7 @@
     </div>
   <% end %>
 
-  <!-- 5. Card que envolve o formulário -->
+  <!--  Card que envolve o formulário -->
   <div class="card shadow-sm">
     <div class="card-body">
       <%= form_with model: @transferencia,
