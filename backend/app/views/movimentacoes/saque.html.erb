@@ -1,25 +1,54 @@
-<h1>Saque</h1>
+<!-- app/views/movimentacoes/saque.html.erb -->
 
-<% if flash[:notice].present? %>
-  <p style="color: green; font-weight: bold; margin-bottom: 1rem;">
-    <%= flash[:notice] %>
-  </p>
-<% end %>
+<div class="mb-4">
+  <!-- Título da página -->
+  <h1 class="mb-3">Saque</h1>
 
-<% if flash[:alert].present? %>
-  <p style="color: red; font-weight: bold; margin-bottom: 1rem;">
-    <%= flash[:alert] %>
-  </p>
-<% end %>
-
-<%= form_with url: create_saque_conta_path(@conta), method: :post, local: true, data: { turbo: false } do |f| %>
-  <div>
-    <%= f.label :valor_saque, "Valor do Saque (R$):" %><br>
-    <%= f.text_field :valor_saque, required:true, pattern: "[0-9]+([.,][0-9]{2})?", placeholder: "0,00" %>
+  <!-- Link “Voltar ao Dashboard” logo abaixo do título -->
+  <div class="mb-4">
+    <%= link_to "Voltar ao Dashboard",
+                dashboard_path,
+                class: "btn btn-outline-primary" %>
   </div>
 
-  <div style="margin-top: 1rem;">
-    <%= f.submit "Confirmar Saque", class: "btn btn-primary" %>
-    <%= link_to "Cancelar", dashboard_path, class: "btn btn-secondary", style: "margin-left: 1rem;" %>
+  <!-- Mensagens de flash estilizadas com Bootstrap -->
+  <% if flash[:notice].present? %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+  <% if flash[:alert].present? %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <!-- Card para o Formulário de Saque -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <!-- Formulário de saque -->
+      <%= form_with url: create_saque_conta_path(@conta), 
+                    method: :post, 
+                    local: true, 
+                    data: { turbo: false } do |f| %>
+
+        <div class="mb-3">
+          <%= f.label :valor_saque, "Valor do Saque (R$):", class: "form-label" %>
+          <%= f.text_field :valor_saque,
+                           class: "form-control",
+                           placeholder: "0,00",
+                           pattern: "[0-9]+([.,][0-9]{2})?",
+                           required: true %>
+        </div>
+
+        <div class="d-flex gap-2">
+          <%= f.submit "Confirmar Saque", class: "btn btn-primary" %>
+          <%= link_to "Cancelar",
+                      dashboard_path,
+                      class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-<% end %>
+</div>
+

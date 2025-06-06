@@ -1,21 +1,43 @@
-<h1>Login do Correntista</h1>
+<!-- app/views/sessions/new.html.erb -->
 
-<% if flash.now[:alert] %>
-  <p style="color: red;"><%= flash.now[:alert] %></p>
-<% end %>
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+  <div class="col-md-4">
+    <!-- Título centralizado -->
+    <h1 class="text-center mb-4">Login do Correntista</h1>
 
-<%= form_with url: login_path, method: :post, local: true, data: { turbo: false } do %>
-  <div>
-    <%= label_tag :conta_numero, "Número da Conta (5 dígitos):" %><br>
-    <%= text_field_tag :conta_numero, params[:conta_numero], maxlength: 5, required: true %>
+    <!-- Exibe mensagem de erro de forma estilizada, se existir -->
+    <% if flash.now[:alert].present? %>
+      <div class="alert alert-danger" role="alert">
+        <%= flash.now[:alert] %>
+      </div>
+    <% end %>
+
+    <!-- Formulário com classes do Bootstrap -->
+    <%= form_with url: login_path, method: :post, local: true, data: { turbo: false } do %>
+      <div class="mb-3">
+        <%= label_tag :conta_numero, "Número da Conta (5 dígitos):", class: "form-label" %>
+        <%= text_field_tag :conta_numero,
+                           params[:conta_numero],
+                           class: "form-control",
+                           maxlength: 5,
+                           required: true,
+                           placeholder: "12345" %>
+      </div>
+
+      <div class="mb-3">
+        <%= label_tag :senha, "Senha (4 dígitos):", class: "form-label" %>
+        <%= password_field_tag :senha,
+                               nil,
+                               class: "form-control",
+                               maxlength: 4,
+                               required: true,
+                               placeholder: "••••" %>
+      </div>
+
+      <div class="d-grid">
+        <%= submit_tag "Entrar", class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
+</div>
 
-  <div>
-    <%= label_tag :senha, "Senha (4 dígitos):" %><br>
-    <%= password_field_tag :senha, nil, maxlength: 4, required: true %>
-  </div>
-
-  <div>
-    <%= submit_tag "Entrar" %>
-  </div>
-<% end %>

@@ -1,10 +1,54 @@
-<h1>Solicitar Visita do Gerente</h1>
+<!-- app/views/movimentacoes/visita.html.erb -->
 
-<p>Confirma débito de <strong>R$50,00</strong> e envio da solicitação de visita do gerente?</p>
+<div class="mb-4">
+  <!-- 1. Título da página -->
+  <h1 class="mb-3">Solicitar Visita do Gerente</h1>
 
-<%= form_with url: create_visita_conta_path(@conta), method: :post, local: true do |f| %>
-  <div>
-    <%= f.submit "Confirmar", class: "btn btn-primary" %>
-    <%= link_to "Cancelar", dashboard_path, class: "btn btn-secondary", style: "margin-left: 1rem;" %>
+  <!-- 2. Link “Voltar ao Dashboard” -->
+  <div class="mb-4">
+    <%= link_to "Voltar ao Dashboard",
+                dashboard_path,
+                class: "btn btn-outline-primary" %>
   </div>
-<% end %>
+
+  <!-- 3. Mensagens de flash (notice/alert) -->
+  <% if flash[:notice].present? %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+  <% if flash[:alert].present? %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <!-- 4. Card contendo a confirmação de débito -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <!-- Parágrafo de confirmação -->
+      <p class="mb-4">
+        Confirma débito de 
+        <strong class="text-danger">R$ 50,00</strong> 
+        e envio da solicitação de visita do gerente?
+      </p>
+
+      <!-- 5. Formulário de confirmação -->
+      <%= form_with url: create_visita_conta_path(@conta),
+                    method: :post,
+                    local: true do |f| %>
+
+        <div class="d-flex gap-2">
+          <!-- Botão Confirmar -->
+          <%= f.submit "Confirmar", class: "btn btn-primary" %>
+
+          <!-- Botão Cancelar -->
+          <%= link_to "Cancelar",
+                      dashboard_path,
+                      class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

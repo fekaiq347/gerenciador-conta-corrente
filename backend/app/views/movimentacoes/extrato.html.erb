@@ -1,62 +1,80 @@
-<h1>Extrato da Conta <%= @conta.correntista.conta_numero %></h1>
+<!-- app/views/movimentacoes/extrato.html.erb -->
 
-<%# Exibe mensagens de flash (sucesso ou erro) %>
-<% if flash[:notice] %>
-  <p style="color: green; margin-bottom: 1rem;"><%= flash[:notice] %></p>
-<% end%>
-<% if flash[:alert] %>
-  <p style="color: red; margin-bottom: 1rem;"><%= flash[:alert] %></p>
-<% end %>
+<!-- Container principal (opcional: você já pode estar dentro de <main class="container">) -->
+<div class="mb-4">
+  <!-- Título da página -->
+  <h1 class="mb-3">Extrato da Conta <%= @conta.correntista.conta_numero %></h1>
 
-<p><strong>Saldo atual:</strong> R$ <%= number_to_currency(@conta.saldo, unit: "", separator: ",", delimiter: ".") %></p>
+  <!-- Link “Voltar ao Dashboard” logo abaixo do título -->
+  <div class="mb-4">
+    <%= link_to "Voltar ao Dashboard",
+                dashboard_path,
+                class: "btn btn-outline-primary" %>
+  </div>
 
-<%# Tabela de movimentações, só que na ordem decrescente %>
-<table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
-  <thead>
-    <tr style="background-color: #f0f0f0;">
-      <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Data e Hora</th>
-      <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Tipo</th>
-      <th style="padding: 8px; border: 1px solid #ccc; text-align: left;">Descrição</th>
-      <th style="padding: 8px; border: 1px solid #ccc; text-align: right;">Valor (R$)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% if @movimentacoes.any? %>
-      <% @movimentacoes.each do |mov| %>
+  <!-- Mensagens de flash estilizadas com Bootstrap -->
+  <% if flash[:notice].present? %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+  <% if flash[:alert].present? %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <!-- Saldo atual -->
+  <p class="fw-bold">
+    Saldo atual: 
+    <span class="text-primary">
+      R$ <%= number_to_currency(@conta.saldo, unit: "", separator: ",", delimiter: ".") %>
+    </span>
+  </p>
+
+  <!-- Tabela de Extrato -->
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered mt-3">
+      <thead class="table-light">
         <tr>
-          <%# Formata data/hora no padrão local %>
-          <td style="padding: 8px; border: 1px solid #ccc;">
-            <%= l mov.data_hora, format: "%d/%m/%Y %H:%M" %>
-          </td>
-
-          <%# Exibe o tipo de movimentação: deposito, saque, penalidade, etc %>
-          <td style="padding: 8px; border: 1px solid #ccc;">
-            
-            <%= I18n.t("activerecord.attributes.movimentacao.tipos.#{mov.tipo}", default: mov.tipo.humanize) %>
-
-          </td>
-
-          <%# Exibe a descrição %>
-          <td style="padding: 8px; border: 1px solid #ccc;">
-            <%= mov.descricao %>
-          </td>
-
-          <%# Exibe o valor com casas decimais e separador de milhar %>
-          <td style="padding: 8px; border: 1px solid #ccc; text-align: right;">
-            <%= number_to_currency(mov.valor, unit: "", separator: ",", delimiter: ".") %>
-          </td>
+          <th scope="col">Data e Hora</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Descrição</th>
+          <th scope="col" class="text-end">Valor (R$)</th>
         </tr>
-      <% end %>
-    <% else %>
-      <tr>
-        <td colspan="4" style="padding: 8px; border: 1px solid #ccc; text-align: center;">
-          Não há movimentações para esta conta.
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+        <% if @movimentacoes.any? %>
+          <% @movimentacoes.each do |mov| %>
+            <tr>
+              <!-- Data e hora formatada -->
+              <td>
+                <%= l mov.data_hora, format: "%d/%m/%Y %H:%M" %>
+              </td>
 
-<div style="margin=top: 2rem;">
-  <%= link_to "Voltar ao Dashboard", dashboard_path, class: "btn btn-link" %>
+              <!-- Tipo (passando pela tradução I18n ou humanize) -->
+              <td>
+                <%= I18n.t("activerecord.attributes.movimentacao.tipos.#{mov.tipo}", default: mov.tipo.humanize) %>
+              </td>
+
+              <!-- Descrição -->
+              <td><%= mov.descricao %></td>
+
+              <!-- Valor alinhado à direita -->
+              <td class="text-end">
+                <%= number_to_currency(mov.valor, unit: "", separator: ",", delimiter: ".") %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="4" class="text-center py-3">
+              Não há movimentações para esta conta.
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
+
