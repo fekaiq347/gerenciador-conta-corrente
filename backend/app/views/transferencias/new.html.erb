@@ -13,12 +13,9 @@
 <%# Se houver erros de validação em @transferencia, exibimos aqui %>
 <% if @transferencia.errors.any? %>
   <div style="color: red; margin-bottom: 1rem;">
-    <h2><%= pluralize(@transferencia.errors.count, "erro") %> impediram a transferência:</h2>
-    <ul>
-      <% @transferencia.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
+    <p>
+      <%= @transferencia.errors.full_messages.first %>
+    </p>
   </div>
 <% end %>
 

@@ -27,7 +27,7 @@ class SolicitacaoVisita < ApplicationRecord
   def somente_vip_pode_solicitar
     return if correntista.nil?
 
-    unless correntista.VIP?
+    unless correntista.vip?
       errors.add(:correntista, "apenas correntista VIP pode solicitar visita do gerente")
     end
   end

@@ -31,7 +31,9 @@
 
           <%# Exibe o tipo de movimentação: deposito, saque, penalidade, etc %>
           <td style="padding: 8px; border: 1px solid #ccc;">
-            <%= mov.tipo.to_s.humanize.capitalize %>
+            
+            <%= I18n.t("activerecord.attributes.movimentacao.tipos.#{mov.tipo}", default: mov.tipo.humanize) %>
+
           </td>
 
           <%# Exibe a descrição %>

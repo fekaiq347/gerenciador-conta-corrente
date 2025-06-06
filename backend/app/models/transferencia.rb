@@ -4,7 +4,7 @@ class Transferencia < ApplicationRecord
   # ------------------------------------------------------------
   # origem_conta e destino_conta são registros da tabela conta_correntes
   belongs_to :origem_conta,  class_name: "ContaCorrente", foreign_key: "origem_conta_id"
-  belongs_to :destino_conta, class_name: "ContaCorrente", foreign_key: "destino_conta_id"
+  belongs_to :destino_conta, class_name: "ContaCorrente", optional: true,  foreign_key: "destino_conta_id"
 
   # Toda transferência poderá gerar várias movimentações
   has_many :movimentacoes, dependent: :destroy

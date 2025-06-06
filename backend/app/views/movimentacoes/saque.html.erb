@@ -1,13 +1,15 @@
 <h1>Saque</h1>
 
-<% if flash.any? %>
-  <div style="margin-bottom: 1rem;">
-    <% flash.each do |tipo, msg| %>
-      <p style="<%= tipo == 'notice' ? 'color: green;' : 'color: red;' %>">
-        <%= msg %>
-      </p>
-    <% end %>
-  </div>
+<% if flash[:notice].present? %>
+  <p style="color: green; font-weight: bold; margin-bottom: 1rem;">
+    <%= flash[:notice] %>
+  </p>
+<% end %>
+
+<% if flash[:alert].present? %>
+  <p style="color: red; font-weight: bold; margin-bottom: 1rem;">
+    <%= flash[:alert] %>
+  </p>
 <% end %>
 
 <%= form_with url: create_saque_conta_path(@conta), method: :post, local: true, data: { turbo: false } do |f| %>
@@ -18,6 +20,6 @@
 
   <div style="margin-top: 1rem;">
     <%= f.submit "Confirmar Saque", class: "btn btn-primary" %>
-    <%= link_to "Cancelar", dashboard_path, style: "margin-left: 1rem;" %>
+    <%= link_to "Cancelar", dashboard_path, class: "btn btn-secondary", style: "margin-left: 1rem;" %>
   </div>
 <% end %>

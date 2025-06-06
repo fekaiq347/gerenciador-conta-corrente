@@ -1,12 +1,16 @@
 <h1>Painel do Correntista</h1>
 
-<% if flash.any? %>
+<% if flash[:notice].present? %>
   <div style="margin-bottom: 1rem;">
-    <% flash.each do |tipo, mensagem| %>
-      <p style="<%= tipo == 'notice' ? 'color: green; font-weight: bold;' : 'color: red; font-weight: bold;' %>">
-        <%= mensagem %>
+      <p style="color: green; font-weight: bold;">
+        <%= flash[:notice] %>
       </p>
-    <% end %>
+  </div>
+<% elsif flash[:alert].present? %>
+  <div style="margin-bottom: 1rem;">
+    <p style="color: red; font-weight: bold;">
+      <%= flash[:alert] %>
+    </p>
   </div>
 <% end %>
 

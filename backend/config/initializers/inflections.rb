@@ -14,6 +14,7 @@
 ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym "RESTful"
   inflect.irregular "transferencia", "transferencias"
+  inflect.irregular "solicitacao_visita", "solicitacao_visitas"
 end
 #
 

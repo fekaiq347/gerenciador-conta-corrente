@@ -4,5 +4,7 @@ class DashboardController < ApplicationController
   def index
     # um exemplo qualquer
     @conta = current_correntista.conta_corrente
+
+    flash.clear
   end
 end
