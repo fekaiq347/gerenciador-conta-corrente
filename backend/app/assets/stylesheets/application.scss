@@ -1,0 +1,25 @@
+// application.scss
+
+// -------------------------------------------------------
+// 1) Fonte global: Montserrat (importada via Google Fonts)
+// -------------------------------------------------------
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+// Se desejar, você pode definir pesos diferentes para headings:
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  /* Por padrão usará o peso normal (400), mas se quiser bold: */
+  /* font-weight: 700; */
+}
+
+// -------------------------------------------------------
+// 2) Outros estilos custom (caso já tenha algo)
+// -------------------------------------------------------
+// Aqui ficam todas as suas regras SCSS personalizadas.
+// Você pode importar partials, por exemplo:
+// @import "components/navbar";
+// @import "components/cards";
+// etc.
+

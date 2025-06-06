@@ -5,7 +5,7 @@
 c = Correntista.find_or_initialize_by(conta_numero: "12345")
   c.nome      = "Cliente Normal"
   c.senha     = "1010"
-  c.perfil    = "NORMAL"
+  c.perfil    = "normal"
 
   c.build_conta_corrente(
     saldo: 1000.00,
@@ -18,7 +18,7 @@ c = Correntista.find_or_initialize_by(conta_numero: "12345")
 c = Correntista.find_or_initialize_by(conta_numero: "54321")
   c.nome      = "Cliente VIP"
   c.senha     = "0101"
-  c.perfil    = "VIP"
+  c.perfil    = "vip"
   
   c.build_conta_corrente(
     saldo: 5000.00,
