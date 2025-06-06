@@ -24,6 +24,8 @@ gem "turbo-rails"
 
 gem 'pg', '>=1.1', '<2.0'
 
+gem 'sassc-rails'
+
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
 
