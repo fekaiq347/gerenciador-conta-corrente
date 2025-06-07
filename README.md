@@ -1,25 +1,33 @@
-# Gerenciador de Conta Corrente
+# Gerenciador de Conta Corrente 
 
-Este é um projeto desenvolvido como parte de um desafio técnico de estágio. A proposta consiste na criação de um sistema bancário simples, com funcionalidades essenciais para gestão de contas correntes. O sistema é construído utilizando boas práticas de desenvolvimento, separação entre frontend e backend, e containerização com Docker.
+Desafio técnico de estágio — sistema bancário com funcionalidades de saque, depósito, transferência, extrato, visita do gerente e troca de usuário.
 
-## Tecnologias Utilizadas
+---
 
-* **Backend**: Ruby on Rails (modo API)
-* **Frontend**: Bootstrap via CDN (interface web simples) 
-* **Banco de dados**: PostgreSQL
-* **Containerização**: Docker + Docker Compose
-* **Versionamento**: Git + GitHub
+## Visão Geral
 
-## Funcionalidades Implementadas
+Este projeto implementa um gerenciador de conta corrente para dois perfis de usuário (NORMAL e VIP), com:
 
-* Login com conta corrente (5 dígitos) e senha (4 dígitos)
-* Visualização de saldo
-* Emissão de extrato com data, hora, descrição e valor
-* Saques (com regras para perfis Normal e VIP)
-* Depósitos
-* Transferências (com tarifas e limites por perfil)
-* Solicitação de visita do gerente (VIP apenas)
-* Troca de usuário (logout/login)
+- **Login simples** (conta de 5 dígitos + senha de 4 dígitos)  
+- **Saldo**  
+- **Extrato** (data, hora, descrição e valor; parênteses se negativo)  
+- **Saque** (regras diferentes para NORMAL e VIP)  
+- **Depósito**  
+- **Transferência** (valores permitidos e tarifas por perfil)  
+- **Solicitação de visita do gerente** (apenas VIP)  
+- **Troca de usuário** sem necessidade de reiniciar a aplicação  
+
+---
+
+## Stack Tecnológica
+
+- **Backend:** Ruby on Rails 7.1  
+- **Banco de dados:** PostgreSQL  
+- **Containerização:** Docker & Docker Compose  
+- **Front-end:** Bootstrap via CDN (interface web simples)  
+- **Versionamento:** Git & GitHub  
+
+---
 
 ## Regras de Negócio
 
@@ -35,43 +43,121 @@ Este é um projeto desenvolvido como parte de um desafio técnico de estágio. A
   * Tarifa: 0,8% do valor transferido
   * Pode solicitar visita do gerente (R\$50)
 
-## Correntistas de Teste
+---
 
-Dois correntistas são pré-cadastrados:
+## Pré-requisitos
 
-| Conta | Senha | Perfil |
-| ----- | ----- | ------ |
-| 12345 | 1010  | Normal |
-| 54321 | 0101  | VIP    |
+- [Docker](https://www.docker.com/)  
+- [Docker Compose](https://docs.docker.com/compose/)  
+
+---
 
 ## Como Executar
 
-1. Clone o repositório:
+1. Certifique-se de que Docker e Docker Compose estão instalados.  
+2. No diretório raiz do projeto, dê permissão e execute o script:
 
 ```bash
-git clone https://github.com/seu-usuario/gerenciador-conta-corrente.git
-cd gerenciador-conta-corrente
+   chmod +x start.sh
+   ./start.sh
+````
+
+Esse script fará:
+
+* `docker-compose up -d --build`
+* `bundle install` dentro do container **backend**
+* `rails db:setup` (criação, migração e seed do banco)
+
+3. Acesse a aplicação em:
+
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## Seeds de Teste
+
+Ao rodar `rails db:setup`, são criados dois correntistas em **db/seeds.rb**:
+
+| Nome           | Conta | Senha | Perfil |
+| -------------  | ----- | ----- | ------ |
+| Cliente NORMAL | 12345 | 1010  | NORMAL |
+| Cliente VIP    | 54321 | 0101  | VIP    |
+
+---
+
+## Modelagem de Dados
+
+### Entidades Principais
+
+1. **Correntista**
+
+   * `id`, `nome`, `conta_numero (char(5))`, `senha (char(4))`, `perfil (ENUM: NORMAL | VIP)`
+
+2. **ContaCorrente**
+
+   * `id`, `correntista_id (1:1)`, `saldo (decimal)`, `esta_negativo (boolean)`, `data_hora_primeiro_negativo (timestamp)`
+
+3. **Movimentacao**
+
+   * `id`, `conta_corrente_id (N:1)`, `tipo (ENUM: SAQUE, DEPOSITO, TRANSFERENCIA\_OUT, TRANSFERENCIA\_IN, TARIFA\_TRANSFERENCIA, PENALIDADE\_SALDO\_NEGATIVO, DEBITO\_VISITA\_GERENTE)`, `valor`, `data_hora`, `descricao`, `transferencia_id (nullable)`
+
+4. **Transferencia**
+
+   * `id`, `origem_conta_id`, `destino_conta_id`, `valor_transferido`, `tarifa`, `data_hora`
+
+5. **SolicitacaoVisita**
+
+   * `id`, `correntista_id`, `data_hora_solicitacao`, `confirmada (boolean)`, `valor_debito (decimal = 50,00)`, `movimentacao_debito_id`
+
+### Relacionamentos
+
+* **Correntista 1:1 ContaCorrente**
+* **ContaCorrente 1\:N Movimentacao**
+* **Transferencia 1:3 Movimentacoes** (saída, tarifa e entrada)
+* **Correntista 1\:N SolicitacaoVisita** (cada visita gera 1 débito em Movimentacao)
+
+---
+
+## Fluxos de Operação
+
+1. **Login:** valida `conta_numero` + `senha`.
+2. **Ver Saldo:** leitura direta de `ContaCorrente.saldo`.
+3. **Extrato:** lista de `Movimentacao` ordenada por `data_hora DESC`.
+4. **Saque:**
+
+   * **NORMAL:** bloqueia se `valor_saque > saldo`.
+   * **VIP:** permite saldo negativo; ao ficar negativo, grava `data_hora_primeiro_negativo` e cobra penalidade de 0,1 % ao minuto (sob demanda).
+5. **Depósito:** quita penalidades (se houver), lança `Movimentacao` de depósito e atualiza saldo.
+6. **Transferência:**
+
+   * **NORMAL:** limite de R\$ 1.000  e tarifa fixa R\$ 8,00.
+   * **VIP:** sem limite e tarifa de 0,8 % sobre o valor.
+   * Gera três `Movimentacao` (out, tarifa, in).
+7. **Solicitação de Visita:** (VIP apenas)
+
+   * Confirmação na UI → cria `SolicitacaoVisita` + lança `Movimentacao` de débito de R\$ 50,00.
+8. **Trocar de Usuário:** limpa sessão e retorna ao login.
+
+---
+
+## Estrutura do Projeto
+
+```
+├── backend/                # Código Rails
+│   ├── app/
+│   ├── config/
+│   ├── db/
+│   └── ...
+├── docker-compose.yml
+├── start.sh                # Script de inicialização
+└── README.md
 ```
 
-2. Suba os containers com Docker Compose:
-
-```bash
-docker-compose up --build
-```
-
-3. Acesse os serviços:
-
-* Frontend: [http://localhost:5173](http://localhost:5173)
-* Backend: [http://localhost:3000](http://localhost:3000)
-
-## Testes
-
-Os testes unitários (quando implementados) podem ser executados com:
-
-```bash
-docker-compose exec backend bundle exec rspec
-```
-
+---
 ## Licença
 
-Projeto para fins de avaliação técnica. Não possui finalidade comercial.
+Este projeto foi desenvolvido para fins de avaliação técnica. Não possui finalidade comercial.
+
+
