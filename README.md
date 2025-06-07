@@ -58,8 +58,8 @@ Este projeto implementa um gerenciador de conta corrente para dois perfis de usu
 2. No diretório raiz do projeto, dê permissão e execute o script:
 
 ```bash
-   chmod +x start.sh
-   ./start.sh
+   chmod +x scripts/start.sh
+   scripts/start.sh
 ````
 
 Esse script fará:
