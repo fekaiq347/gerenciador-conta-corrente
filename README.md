@@ -156,6 +156,17 @@ Ao rodar `rails db:setup`, são criados dois correntistas em **db/seeds.rb**:
 ```
 
 ---
+
+## Sobre o uso de master.key e credentials.yml.enc
+
+Para garantir o funcionamento correto da aplicação Rails no ambiente Docker, os arquivos config/master.key e config/credentials.yml.enc foram incluídos no repositório. Isso evita erros relacionados à descriptografia das credenciais durante o boot da aplicação.
+
+Importante:
+  Todos os dados contidos nas credenciais são fictícios e foram definidos exclusivamente para fins de demonstração neste desafio técnico de estágio.
+  Nenhuma chave, senha ou token real foi utilizado, portanto não há riscos de segurança envolvidos.
+
+
+---
 ## Licença
 
 Este projeto foi desenvolvido para fins de avaliação técnica. Não possui finalidade comercial.
