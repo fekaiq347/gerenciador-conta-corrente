@@ -52,7 +52,6 @@ class TransferenciasController < ApplicationController
     @conta_origem = current_correntista.conta_corrente
   end
 
-  # Só permitimos esses campos do form
   def transferencia_params
     params.require(:transferencia).permit(:destino_conta_numero, :valor_transferido)
   end

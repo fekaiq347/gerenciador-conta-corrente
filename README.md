@@ -5,7 +5,7 @@ Este é um projeto desenvolvido como parte de um desafio técnico de estágio. A
 ## Tecnologias Utilizadas
 
 * **Backend**: Ruby on Rails (modo API)
-* **Frontend**: React + Vite + Tailwind CSS
+* **Frontend**: Bootstrap via CDN (interface web simples) 
 * **Banco de dados**: PostgreSQL
 * **Containerização**: Docker + Docker Compose
 * **Versionamento**: Git + GitHub
@@ -41,8 +41,8 @@ Dois correntistas são pré-cadastrados:
 
 | Conta | Senha | Perfil |
 | ----- | ----- | ------ |
-| 12345 | 1234  | Normal |
-| 54321 | 4321  | VIP    |
+| 12345 | 1010  | Normal |
+| 54321 | 0101  | VIP    |
 
 ## Como Executar
 
