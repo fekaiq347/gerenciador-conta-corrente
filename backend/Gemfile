@@ -1,0 +1,44 @@
+source "https://rubygems.org"
+
+ruby "3.2.8"
+
+# Rails Core
+gem "rails", "~> 7.1.5", ">= 7.1.5.1"
+gem "puma", ">= 5.0"
+gem "bootsnap", require: false
+
+# Frontend / Assets
+gem "sprockets-rails"
+gem "importmap-rails"
+gem "turbo-rails"
+gem "sassc-rails"
+gem "stimulus-rails"
+
+# Banco de Dados
+gem "pg", '>=1.1', '<2.0'
+gem "sqlite3", ">= 1.4"
+
+# JSON / API
+gem "jbuilder"
+
+# Utilidades
+gem "tzinfo-data", platforms: %i[ windows jruby ]
+
+# Desenvolvimento e Testes
+group :development, :test do
+  gem "debug", platforms: %i[ mri windows ]
+  gem "dotenv-rails"
+  gem "rspec-rails"
+end
+
+group :development do
+  gem "web-console"
+end
+
+group :test do
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem "capybara"
+  gem "selenium-webdriver"
+end
+
+

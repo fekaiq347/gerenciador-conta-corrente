@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  correntista: one
+  saldo: 9.99
+  esta_negativo: false
+  data_hora_primeiro_negativo: 2025-06-01 15:26:59
+
+two:
+  correntista: two
+  saldo: 9.99
+  esta_negativo: false
+  data_hora_primeiro_negativo: 2025-06-01 15:26:59

@@ -1,0 +1,100 @@
+<h1>Painel do Correntista</h1>
+
+<% if flash[:notice].present? %>
+  <div style="margin-bottom: 1rem;">
+      <p style="color: green; font-weight: bold;">
+        <%= flash[:notice] %>
+      </p>
+  </div>
+<% elsif flash[:alert].present? %>
+  <div style="margin-bottom: 1rem;">
+    <p style="color: red; font-weight: bold;">
+      <%= flash[:alert] %>
+    </p>
+  </div>
+<% end %>
+
+             <!-- Painel do Correntista -->
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <!-- Card com informações do correntista -->
+            <div class="card mb-4">
+              <div class="card-body">
+                <h2 class="card-title">Detalhes da Conta</h2>
+                <h5 class="card-subtitle mb-3 text-muted">
+                  Olá, <%= "#{saudacao_por_horario}" %>!
+                </h5>
+
+                <!-- Perfil e saldo, lado a lado -->
+                <div class="row">
+                  <div class="col-sm-6 mb-2">
+                    <p class="mb-1"><strong>Seu perfil:</strong></p>
+                    <span class="badge <%= current_correntista.vip? ? 'bg-success' : 'bg-secondary' %>">
+                      <%= current_correntista.perfil.upcase %>
+                    </span>
+                  </div>
+                  <div class="col-sm-6 mb-2">
+                    <p class="mb-1"><strong>Saldo atual:</strong></p>
+                    <p class="h5 text-primary">
+                      <%= number_to_currency(
+                            @conta.saldo,
+                            unit: "R$ ",
+                            separator: ",",
+                            delimiter: "."
+                          ) %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card de Menu de Ações -->
+            <div class="card shadow-sm">
+              <div class="card-header">
+                Menu de Ações
+              </div>
+              <div class="card-body">
+                <!-- Extrato -->
+                <div class="d-grid gap-2">
+                  <%= link_to "Extrato",
+                              extrato_conta_path(@conta),
+                              class: "btn btn-outline-primary",
+                              data: { turbo: false } %>
+
+                <!-- Saque -->
+                  <%= link_to "Saque",
+                              new_saque_conta_path(@conta),
+                              class: "btn btn-outline-primary",
+                              data: { turbo: false } %>
+
+                <!-- Depósito -->
+                  <%= link_to "Depósito",
+                              new_deposito_conta_path(@conta),
+                              class: "btn btn-outline-primary",
+                              data: { turbo: false } %>
+
+                <!-- Transferência -->
+                  <%= link_to "Transferência",
+                              new_transferencia_conta_path(@conta),
+                              class: "btn btn-outline-primary",
+                              data: { turbo: false } %>
+
+                <!-- Solicitação de visita do gerente (Verificar TIPO de Correntista) -->
+                 <% if current_correntista.vip? %>
+                  <%= link_to "Solicitar visita do gerente", 
+                              new_visita_conta_path(@conta),
+                              class: "btn btn-outline-primary",
+                              data: { turbo: false } %>
+                  <% end %> 
+
+                <!-- Sair / Trocar de usuário -->
+                  <%= link_to "Sair (Trocar de usuário)",
+                              logout_path,
+                              method: :delete,
+                              class: "btn btn-outline-danger" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      

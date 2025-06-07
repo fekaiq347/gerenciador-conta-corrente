@@ -1,0 +1,12 @@
+pt:
+  activerecord:
+    attributes:
+      movimentacao:
+        tipos:
+          saque: "Saque"
+          deposito: "Depósito"
+          transferencia_out: "Transferência (saída)"
+          transferencia_in: "Transferência (entrada)"
+          tarifa_transferencia: "Tarifa de Transferência"
+          penalidade_saldo_negativo: "Penalidade por Saldo Negativo"
+          debito_visita_gerente: "Débito Visita do Gerente"
