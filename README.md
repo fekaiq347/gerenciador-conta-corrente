@@ -1,6 +1,6 @@
 # Gerenciador de Conta Corrente 
 
-Desafio técnico de estágio — sistema bancário com funcionalidades de saque, depósito, transferência, extrato, visita do gerente e troca de usuário.
+Desafio técnico — sistema bancário com funcionalidades de saque, depósito, transferência, extrato, visita do gerente e troca de usuário.
 
 ---
 
